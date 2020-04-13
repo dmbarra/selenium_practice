@@ -82,8 +82,6 @@ public class AddCustomer {
     }
 
     public String successMessage(){
-        WebDriverWait wait = new WebDriverWait(driver, 15, 500);
-        wait.until(ExpectedConditions.visibilityOfAllElements(reportSuccess));
         return reportSuccess.getText();
     }
 
@@ -93,4 +91,8 @@ public class AddCustomer {
     }
 
 
+    public void waitForSuccessMessage(String expectedMessage) {
+        WebDriverWait wait = new WebDriverWait(driver, 15, 500);
+        wait.until(ExpectedConditions.textToBePresentInElement(reportSuccess, expectedMessage));
+    }
 }

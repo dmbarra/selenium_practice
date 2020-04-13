@@ -17,6 +17,9 @@ public class SicrediChallengeTest extends BaseSetup {
         addCustomer.saveForm();
 
         String expectedMessage = "Your data has been successfully stored into the database. Edit Customer or Go back to list";
+
+        addCustomer.waitForSuccessMessage(expectedMessage);
+
         assertThat(expectedMessage).isEqualTo(addCustomer.successMessage());
 
     }
