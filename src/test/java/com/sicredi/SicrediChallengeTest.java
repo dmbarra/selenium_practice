@@ -1,6 +1,7 @@
 package com.sicredi;
 
 import com.sicredi.hooks.BaseSetup;
+import com.sicredi.hooks.CustomerData;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -13,18 +14,21 @@ public class SicrediChallengeTest extends BaseSetup {
         mainPage.addNewCustomer();
 
         addCustomer.fillFormNewCustomer();
-
         addCustomer.saveForm();
 
         String expectedMessage = "Your data has been successfully stored into the database. Edit Customer or Go back to list";
-        assertThat(addCustomer.successMessage()).isEqualTo(expectedMessage);
+        assertThat(expectedMessage).isEqualTo(addCustomer.successMessage());
 
     }
 
     @Test(dependsOnMethods = { "createNewCustomer" })
     public void deleteCustomer(){
+        mainPage.searchByCustomer(CustomerData.NAME);
 
-        assertThat(false).isFalse();
+        mainPage.removeFirstCustomer();
+
+        String expectedMessage = "Your data has been successfully deleted from the database.";
+        assertThat(expectedMessage).isEqualTo(mainPage.returnSuccesMessage());
 
     }
 }

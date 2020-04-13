@@ -55,6 +55,7 @@ public class AddCustomer {
     @FindBy(id = "report-success")
     private WebElement reportSuccess;
 
+    private By locatorOfInputField = By.cssSelector("input[type='text']");
 
     public AddCustomer(WebDriver driver) {
         this.driver = driver;
@@ -81,15 +82,14 @@ public class AddCustomer {
     }
 
     public String successMessage(){
-        WebDriverWait wait = new WebDriverWait(driver, 15, 50);
+        WebDriverWait wait = new WebDriverWait(driver, 15, 500);
         wait.until(ExpectedConditions.visibilityOfAllElements(reportSuccess));
         return reportSuccess.getText();
     }
 
     private void selectFromEmployeer(String from) {
         fieldSalesRepEmployeeNumber.click();
-        fieldSalesRepEmployeeNumber.findElement(By.cssSelector("input[type='text']")).sendKeys(from);
-
+        fieldSalesRepEmployeeNumber.findElement(locatorOfInputField).sendKeys(from);
     }
 
 
