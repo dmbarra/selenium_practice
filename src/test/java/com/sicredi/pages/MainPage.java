@@ -31,7 +31,7 @@ public class MainPage {
     @FindBy(css = "table.table.table-bordered.grocery-crud-table.table-hover")
     private WebElement tableOfResults;
 
-    @FindBy(css = "div.modal-dialog")
+    @FindBy(css = "div.delete-multiple-confirmation.modal.fade.in.show")
     private WebElement modalDialog;
 
     @FindBy(css = "span[data-growl='message']")
@@ -39,10 +39,11 @@ public class MainPage {
 
     private By locatorLoadingMessage = By.cssSelector("div.container-fluid.gc-container.loading-opacity");
     private By locatorOfFirstColumnOnTable = By.cssSelector("tbody > tr");
-    private By locatorButtonMore = By.cssSelector("div.btn-group");
-    private By locatorDeleteOptionForActions = By.cssSelector("ul.dropdown-menu > li:nth-child(3) > a > span");
-    private By locatorOfDeleteButtonInModal = By.cssSelector("button.btn.btn-danger.delete-confirmation-button");
+    private By locatorOfCheckbox = By.cssSelector("input.select-row[type='checkbox']");
+    private By locatorDeleteOptionForActions = By.cssSelector("a.btn.btn-default.delete-selected-button");
+    private By locatorOfDeleteButtonInModal = By.cssSelector("button.btn.btn-danger.delete-multiple-confirmation-button");
     private By locatorOfTbody = By.cssSelector("td");
+    private By locatorModalMessage = By.cssSelector("p.alert-delete-multiple-one");
 
     public MainPage(WebDriver driver) {
         this.driver = driver;
@@ -65,23 +66,25 @@ public class MainPage {
     }
 
     public void removeFirstCustomer(){
-        WebDriverWait wait = new WebDriverWait(driver, 15, 50);
+        WebDriverWait wait = new WebDriverWait(driver, 10, 50);
         wait.until(ExpectedConditions.invisibilityOfElementLocated(locatorLoadingMessage));
 
         tableOfResults.findElements(locatorOfTbody);
 
         WebElement firstColumnOfTable = tableOfResults.findElements(locatorOfFirstColumnOnTable).get(0);
-        firstColumnOfTable.findElement(locatorButtonMore).click();
-        firstColumnOfTable.findElement(locatorDeleteOptionForActions).click();
+        firstColumnOfTable.findElement(locatorOfCheckbox).click();
 
-        waitForModalDialog();
-
-        modalDialog.findElement(locatorOfDeleteButtonInModal).click();
+        tableOfResults.findElements(locatorDeleteOptionForActions).get(0).click();
     }
 
-    public void waitForModalDialog(){
+    public String waitForModalDialogAndReturnMessage(){
         WebDriverWait wait = new WebDriverWait(driver, 15, 500);
         wait.until(visibilityOfAllElements(modalDialog));
+        return modalDialog.findElement(locatorModalMessage).getText();
+    }
+
+    public void confirmDeleteCustomer(){
+        modalDialog.findElement(locatorOfDeleteButtonInModal).click();
     }
 
     public String returnSuccesMessage(){

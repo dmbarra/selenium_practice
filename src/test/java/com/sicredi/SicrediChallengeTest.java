@@ -27,8 +27,17 @@ public class SicrediChallengeTest extends BaseSetup {
 
         mainPage.removeFirstCustomer();
 
+        String modalMessage = mainPage.waitForModalDialogAndReturnMessage();
+
+        mainPage.confirmDeleteCustomer();
+
+        String expectedMessageModal = "Are you sure that you want to delete this 1 item?";
         String expectedMessage = "Your data has been successfully deleted from the database.";
+
+
+        assertThat(expectedMessageModal).isEqualTo(modalMessage);
         assertThat(expectedMessage).isEqualTo(mainPage.returnSuccesMessage());
+
 
     }
 }
